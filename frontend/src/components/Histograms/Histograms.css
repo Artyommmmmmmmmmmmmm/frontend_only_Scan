@@ -1,0 +1,14 @@
+.checkbox {
+    height: 25px;
+    width: 25px;
+    border: 1px solid rgb(193, 27, 27);
+    color: green;
+}
+
+.errors {
+    border : 2px solid red;
+    color: rgb(68, 0, 0);
+    border-radius: 5px;
+    width: fit-content;
+    height: fit-content;
+}
