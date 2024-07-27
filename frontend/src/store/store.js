@@ -31,7 +31,7 @@ export default class Store {
     async info() {
         try {
             const response = await AuthService.info();
-            localStorage.setItem('userInfo', response.data);
+            return(response)
         } catch(e) {
             console.log(e)
         } 

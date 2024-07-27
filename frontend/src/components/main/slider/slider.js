@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react'
-import { Context } from '../..'
+import { Context } from '../../..'
 import {observer} from 'mobx-react-lite'
 
 import Swiper from 'swiper';
@@ -94,23 +94,23 @@ const Slider = () => {
     }, [])
 
     return (
-
-    <div>
-        <div class="swiper">
-          <div class="swiper-wrapper">
-            <div class="swiper-slide" id='one'>Slide 1</div>
-            <div class="swiper-slide" id='two'>Slide 2</div>
-            <div class="swiper-slide" id='three'>Slide 3</div>
-            <div class="swiper-slide" id='one'>Slide 1</div>
-            <div class="swiper-slide" id='two'>Slide 2</div>
-            <div class="swiper-slide" id='three'>Slide 3</div>
+      <div className='cont'>
+        <div className="swiper-button-prev" id='prev'></div>
+          <div className="swiper">
+            <div className="swiper-wrapper">
+              <div className="swiper-slide" id='one'>Slide 1</div>
+              <div className="swiper-slide" id='two'>Slide 2</div>
+              <div className="swiper-slide" id='three'>Slide 3</div>
+              <div className="swiper-slide" id='one'>Slide 1</div>
+              <div className="swiper-slide" id='two'>Slide 2</div>
+              <div className="swiper-slide" id='three'>Slide 3</div>
+            </div>
           </div>
-        </div>
-        <div class="swiper-pagination"></div>
-        <div class="swiper-button-prev" id='prev'></div>
-        <div class="swiper-button-next" id='next'></div>
-        <div class="swiper-scrollbar"></div>
-    </div>
+          <div className="swiper-pagination"></div>
+          
+          <div className="swiper-button-next" id='next'></div>
+          <div className="swiper-scrollbar"></div>
+      </div>
     );
 }
 

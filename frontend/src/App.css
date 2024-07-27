@@ -45,6 +45,5 @@
 
 .grow-1 {
   box-sizing: border-box;
-  height: 100%;
   flex-grow: 1;
 }

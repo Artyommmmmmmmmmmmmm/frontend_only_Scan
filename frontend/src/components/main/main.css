@@ -1,20 +1,16 @@
-@font-face {
-	font-family: 'Ferry';
-	src: url('./font/Ferry/Ferry-Black.eot');
-	src: local('Ferry Black'), local('Ferry-Black'),
-		url('./font/Ferry/Ferry-Black.eot?#iefix') format('embedded-opentype'),
-		url('./font/Ferry/Ferry-Black.woff') format('woff'),
-		url('./font/Ferry/Ferry-Black.ttf') format('truetype');
-	font-weight: 900;
-	font-style: normal;
+@import url(../fonts/fonts.css);
+
+.main-page-slider {
+    margin-top: 75px;
 }
 
-@font-face {
-	font-family: 'Inter';
-	src: url('./font/Inter/Inter-VariableFont_slnt,wght.ttf');
-	font-style: normal;
-}
 .main-page-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-page-top {
     height: 620px;
     padding-top: 40px;
     padding-left: 40px;
@@ -62,4 +58,63 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+}
+
+.scnd-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 80px;
+}
+
+.tariffs-cont {
+    margin-top: 80px;
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-bottom: 80px;
+}
+
+.tariffs {
+    margin-top: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.tariff {
+    width: 415px;
+    height: 540px;  
+    border-radius: 10px;
+}
+
+.tariff:nth-child(1) {
+    border: 3px solid #FFB64F;
+}
+
+.tariff:nth-child(2) {
+    border: 3px solid #7CE3E1;
+}
+
+.tariff:nth-child(3) {
+    border: 3px solid #000000;
+}
+
+.tariff-header {
+    background-color: #FFB64F;
+    height: 130px;
+}
+
+.tariff:nth-child(1) .tariff-header {
+    background-color: #FFB64F;
+}
+
+.tariff:nth-child(2) .tariff-header  {
+    background-color: #7CE3E1;
+}
+.tariff:nth-child(3) .tariff-header  {
+    background-color: #000000;
+}
+
+.tariff-inner {
+    background-color: antiquewhite;
 }
