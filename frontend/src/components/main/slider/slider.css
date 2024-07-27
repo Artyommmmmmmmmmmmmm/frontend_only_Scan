@@ -24,6 +24,7 @@
 .cont {
     display: flex;
     align-items: center;   
+    margin-top: 50px;
 }
 .swiper-button-prev{
     position: relative;
@@ -31,5 +32,9 @@
 
 .swiper-button-next{
     position: relative;
+}
+
+.swiper-wrapper {
+    height: 250px;
 }
 
