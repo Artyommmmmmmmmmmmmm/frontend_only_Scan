@@ -98,9 +98,26 @@ const Slider = () => {
         <div className="swiper-button-prev" id='prev'></div>
           <div className="swiper">
             <div className="swiper-wrapper">
-              <div className="swiper-slide" id='one'>Slide 1</div>
-              <div className="swiper-slide" id='two'>Slide 2</div>
-              <div className="swiper-slide" id='three'>Slide 3</div>
+              <div className="swiper-slide" >
+                <div><img src={require('./images/Mask_group_1.png')} className='slide-image'></img></div>
+                <div>
+                  <div id='one' className='slide-text'>Высокая и оперативная скорость обработки заявки</div>
+                </div>
+              </div>
+              <div className="swiper-slide" >
+                <div>
+                  <img src={require('./images/Mask_group_2.png')} className='slide-image'></img>
+                </div>
+                <div>
+                  <div id='two' className='slide-text'>Огромная комплексная база данных, обеспечивающая объективный ответ на запрос</div>
+                </div>
+              </div>
+              <div className="swiper-slide" >
+                <div><img src={require('./images/Mask_group_3.png')} className='slide-image'></img></div>
+                <div>
+                  <div id='three' className='slide-text'>Защита конфеденциальных сведений, не подлежащих разглашению по федеральному законодательству</div>
+                </div>
+              </div>
               <div className="swiper-slide" id='one'>Slide 1</div>
               <div className="swiper-slide" id='two'>Slide 2</div>
               <div className="swiper-slide" id='three'>Slide 3</div>
