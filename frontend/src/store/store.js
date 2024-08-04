@@ -88,7 +88,6 @@ export default class Store {
     async documents(array) {
         try {
             const response = await AuthService.documents(array)
-            localStorage.setItem('documents', JSON.stringify(response))
             return(response)
         } catch(e) {
             console.log(e)

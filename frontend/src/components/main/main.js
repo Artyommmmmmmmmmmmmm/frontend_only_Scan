@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import Slider from './slider/slider.js'
 import userData from '../header/user/user.js'
+import { Link } from 'react-router-dom'
 import './main.css'
 
 class Main extends React.Component {
@@ -26,9 +27,17 @@ class Main extends React.Component {
               <p>Комплексный анализ публикаций, получение данных в формате PDF на электронную почту.</p>
             </div>
             <div className='request-btn-container'>
-              <div className={this.isAuth ? 'request-btn' : 'display-hide'}>
+              {this.isAuth ?
+              <Link 
+                to='/histogramform'
+                className='request-btn'>
+                <div>Запросить данные</div>
+              </Link>
+              :
+              <div className='display-hide'>
                 <div>Запросить данные</div>
               </div>
+              }
 
             </div>
           </div>

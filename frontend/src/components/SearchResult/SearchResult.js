@@ -9,23 +9,31 @@ const SearchResult = () => {
     const {store} = useContext(Context)
     const response = JSON.parse(localStorage.getItem('histograms'))
     const totalIds = JSON.parse(localStorage.getItem('ids')).data.items.map(item => item.encodedId)
-    const [documents, setDocuments] = useState(JSON.parse(localStorage.getItem('documents')))
+    const [documents, setDocuments] = useState(null)
     const [error, setError] = useState('')
     const [page, setPage] = useState(1)
     const itemsPerPage = 10
-    const [visibleData, setVisibleData] = useState(documents.data.slice(0, page * itemsPerPage))
-
     const clientWidth = document.documentElement.clientWidth
+    const [visibleData, setVisibleData] = useState(null)
+    const fetchData = async () => {
+        try {
+            const response = await store.documents(totalIds);
+            const newData = response.data.slice(0, page * itemsPerPage)
+            setVisibleData(newData);        
+        } catch (e) {
+            setError(e);
+        }
+    };
 
+    
 
-
-    const loadMoreData = () => {
-        const newData = documents.data.slice(0, page * itemsPerPage)
-        setVisibleData(newData)
-    }
+    // const loadMoreData = () => {
+        
+    //     setVisibleData(newData)
+    // }
 
     useEffect(() => {
-      loadMoreData()
+      fetchData()
     }, [page])
     return (
       <div className='searchres-main-cont'>
@@ -62,7 +70,7 @@ const SearchResult = () => {
         </div>
         <div>
           <p className='searchres-smaller-big-text'>список документов</p>
-          {documents ?
+          {visibleData ?
           <div className='cards-cont'>
             {clientWidth < 900 ?
             visibleData.map((item) => 
