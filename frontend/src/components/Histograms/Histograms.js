@@ -1,6 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react'
 import { Context } from '../..'
 import {observer} from 'mobx-react-lite'
+import { Link } from 'react-router-dom'
 import './Histograms.css'
 
 const HistogramsForm = () => {
@@ -17,6 +18,8 @@ const HistogramsForm = () => {
     const [excludeTechNews, setExcludeTechNews] = useState(false)
     const [excludeAnnouncements, setExcludeAnnouncements] = useState(false)
     const [excludeDigests, setExcludeDigests] = useState(false)
+    const [formValid, setFormValid] = useState(false)
+    const clientWidth = document.documentElement.clientWidth
  
     const innValidation = () => {
         const n1 = inn[0] * 2
@@ -33,11 +36,12 @@ const HistogramsForm = () => {
                       n7+n8+n9
         control = control%11
         if (control == inn[9]) {
-            document.getElementById('error').innerHTML = ''
+            // document.getElementById('error').innerHTML = ''
             return true
         } else {
-            document.getElementById('error').innerHTML = 'инн введён неверно'
+            // document.getElementById('error').innerHTML = 'инн введён неверно'
             return false
+            
 
         }
     }
@@ -46,13 +50,13 @@ const HistogramsForm = () => {
         const dateStart = new Date(startDate)
         const dateEnd = new Date(endDate)
         const current = new Date()
-        if (dateStart.getTime() > current.getTime() || dateEnd.getTime() > current.getTime()) {
-            return false
+
+        if (dateStart.getTime() < current.getTime() && 
+            dateEnd.getTime() < current.getTime() && 
+            dateStart.getTime() < dateEnd.getTime()) {
+            return true
         }
-        if (dateStart.getTime() > dateEnd.getTime()) {
-            return false
-       }
-       return true
+        return false
     }
 
     const tonalityValidation = () => {
@@ -70,81 +74,231 @@ const HistogramsForm = () => {
         return true
         }    
 
-    // ✔️✔️✔️
+    const request = () => {
+        {if (dateValidation() && innValidation() && limitValidation() && tonalityValidation()) {
+            store.histograms(
+                startDate, endDate, inn, limit,
+                maxFullness, inBusinessNews, onlyMainRole,
+                tonality, onlyWithRiskFactors, excludeTechNews,
+                excludeAnnouncements, excludeDigests)}}
+            store.documentIds(
+                startDate, endDate, inn, limit,
+                maxFullness, inBusinessNews, onlyMainRole,
+                tonality, onlyWithRiskFactors, excludeTechNews,
+                excludeAnnouncements, excludeDigests)
+    }
+
+    useEffect(() => {
+        if (dateValidation() && innValidation() && limitValidation() && tonalityValidation()) {
+            setFormValid(true)
+        } else {
+            setFormValid(false)
+        }
+    })
 
     return (
-        <div>
-            <input 
-                type='text'  
-                value={inn} 
-                onChange={(e) => {setInn(e.target.value)}}/>
-            <input 
-                className='checkbox' 
-                type='checkbox' 
-                checked={maxFullness}
-                onChange={() => {setMaxFullness(!maxFullness)
-                    console.log(inn)
-                }}/>
-            <input
-                className='checkbox' 
-                type='checkbox'
-                checked={inBusinessNews}
-                onChange={() => {setInBusinessNews(!inBusinessNews)}}/>
-            <input 
-                className='checkbox' 
-                type='checkbox' 
-                checked={onlyMainRole}
-                onChange={() => {setOnlyMainRole(!onlyMainRole)}}/>
-            <select
-                value={tonality}
-                onChange={(e) => {setTonality(e.target.value)}}
-            >   <option value=''>выберите тональность</option>
-                <option value='positive'>позитивная</option>
-                <option value='negative'>негативная</option>
-                <option value='any'>любая</option>
-            </select>
-            <input 
-                className='checkbox' 
-                type='checkbox' 
-                checked={onlyWithRiskFactors}
-                onChange={() => {setOnlyWithRiskFactors(!onlyWithRiskFactors)}}/>
-            <input 
-                className='checkbox' 
-                type='checkbox' 
-                checked={excludeTechNews}
-                onChange={() => {setExcludeTechNews(!excludeTechNews)}}/>
-            <input 
-                className='checkbox' 
-                type='checkbox' 
-                checked={excludeAnnouncements} 
-                onChange={() => {setExcludeAnnouncements(!excludeAnnouncements)}}/>
-            <input 
-                className='checkbox' 
-                type='checkbox' 
-                checked={excludeDigests}
-                onChange={() => {setExcludeDigests(!excludeDigests)}}/>
-            <input 
-                type='text'
-                value={limit}
-                onChange={(e) => {setLimit(e.target.value)}}/>
-            <input 
-                type='date'
-                value={startDate}
-                onChange={(e) => {setStartDate(e.target.value)}}/>
-            <input 
-                type='date'
-                value={endDate}
-                onChange={(e) => {setEndDate(e.target.value)}}/>
-            
-            <button onClick={() => {if (dateValidation() && innValidation() && limitValidation() && tonalityValidation()) {
-                console.log('всё ок')
-            } else {
-                console.log('что то не так')
+        <div className='histograms-main-cont'>
+            <div className='histograms-cont'>
+                <div className='histograms-text-cont'>
+                    <div className='histograms-big-text'>Найдите необходимые данные в пару кликов.</div>
+                    <div className='small-text-cont '>
+                        {clientWidth < 900 
+                        ? 
+                        <div className='small-text-row'>
+                            Задайте параметры поиска.
+                            Чем больше заполните, тем точнее поиск.
+                        </div> 
+                        :
+                        <div>
+
+                            <p className='small-text-row'>Задайте параметры поиска.</p>
+                            <p className='small-text-row'>Чем больше заполните, тем точнее поиск.</p>   
+                        </div>                     
+                        }
+                    </div>
+                </div>
+                {clientWidth < 900 
+                ?
+                <div className='top-image-cont-mobile'>
+                    <img src={require('./Document.png')}></img>                    
+                </div>                
+                : null}
+
+                <div className='histograms-form-cont'>
+                    <div className='inputs-cont'>
+                        <div className='histograms-input-cont'>
+                            ИНН компании*
+                            <input 
+                            className='inn-input histograms-input'
+                            type='text'  
+                            value={inn} 
+                            onChange={(e) => {setInn(e.target.value)}}/>
+                        </div>
+                        <div className='histograms-input-cont'>
+                            Тональность*
+                            <select 
+                                className='tonality-input histograms-input'
+                                value={tonality}
+                                onChange={(e) => {setTonality(e.target.value)}}>
+                                <option value=''>выберите тональность</option>
+                                <option value='positive'>позитивная</option>
+                                <option value='negative'>негативная</option>
+                                <option value='any'>любая</option>
+                            </select>
+                        </div>
+                        <div className='histograms-input-cont'>
+                            Количество документов в выдаче*
+                            <input 
+                            className='tonality-input histograms-input'
+                            type='text'
+                            placeholder='1-1000'
+                            value={limit}
+                            onChange={(e) => {setLimit(e.target.value)}}/>                            
+                        </div>   
+                        <div className='histograms-input-cont'>
+                            Диапазон поиска*
+                            <div className='date-inputs-cont'>
+                                <input 
+                                    className='date-input histograms-input'
+                                    type='date'
+                                    placeholder='дата начала'
+                                    value={startDate}
+                                    onChange={(e) => {setStartDate(e.target.value)}}/>
+                                <input 
+                                    className='date-input histograms-input'
+                                    type='date'
+                                    placeholder='дата конца'
+                                    value={endDate}
+                                    onChange={(e) => {setEndDate(e.target.value)}}/>
+                            </div>
+                        </div>  
+                        {clientWidth < 900 
+                        ?
+                        <div className='confirm-button-cont'>
+                            <div className='confirm-button-wrap'>
+                                <Link 
+                                    to={formValid ? '/searchres' : null}
+                                    className={formValid ? 'confirm-button' : 'confirm-button-inactive'}
+                                    onClick={formValid ? request() : null}        
+                                >
+                                    Поиск
+                                </Link>
+                                <div className='text-under-button'>
+                                    * обязательные к заполнению поля
+                                </div>
+                            </div>
+                        </div>
+                        : null}
+                    </div>
+                    {clientWidth < 900 
+                    ? 
+                    null 
+                    : 
+                    <div className='checkboxes-cont'>
+                        <div className='checkbox-cont'>
+                            <input 
+                                className='checkbox histograms-checkbox' 
+                                type='checkbox' 
+                                checked={maxFullness}
+                                onChange={() => {setMaxFullness(!maxFullness)}}/>
+                                <span className={maxFullness ? '' : 'checkbox-disabled'}>Признак максимальной полноты</span>
+                        </div>
+                        <div className='checkbox-cont'>
+                            <input
+                                className='checkbox histograms-checkbox' 
+                                type='checkbox'
+                                checked={inBusinessNews}
+                                onChange={() => {setInBusinessNews(!inBusinessNews)}}/>
+                            <span className={inBusinessNews ? '' : 'checkbox-disabled'}>Упоминания в бизнес контексте</span>
+                        </div>
+                        <div className='checkbox-cont'>
+                            <input 
+                                className='checkbox histograms-checkbox' 
+                                type='checkbox' 
+                                checked={onlyMainRole}
+                                onChange={() => {setOnlyMainRole(!onlyMainRole)}}/>
+                                <span className={onlyMainRole ? '' : 'checkbox-disabled'}>Главная роль в публикации</span>
+                        </div>
+                        <div className='checkbox-cont'>
+                            <input 
+                                className='checkbox histograms-checkbox' 
+                                type='checkbox' 
+                                checked={onlyWithRiskFactors}
+                                onChange={() => {setOnlyWithRiskFactors(!onlyWithRiskFactors)}}/>
+                                <span className={onlyWithRiskFactors ? '' : 'checkbox-disabled'}>Публикации только с риск-факторами</span>
+                        </div>
+                        <div className='checkbox-cont'>
+                            <input 
+                                className='checkbox histograms-checkbox' 
+                                type='checkbox' 
+                                checked={excludeTechNews}
+                                onChange={() => {setExcludeTechNews(!excludeTechNews)}}/>
+                                <span className={excludeTechNews ? '' : 'checkbox-disabled'}>Включать технические новости рынков</span>
+                        </div>
+                        <div className='checkbox-cont'>
+                            <input 
+                                className='checkbox histograms-checkbox' 
+                                type='checkbox' 
+                                checked={excludeAnnouncements} 
+                                onChange={() => {setExcludeAnnouncements(!excludeAnnouncements)}}/>
+                                <span className={excludeAnnouncements ? '' : 'checkbox-disabled'}>Включать анонсы и календари</span>
+                        </div>
+                        <div className='checkbox-cont'>
+                            <input 
+                                className='checkbox histograms-checkbox' 
+                                type='checkbox' 
+                                checked={excludeDigests}
+                                onChange={() => {setExcludeDigests(!excludeDigests)}}/>
+                                <span className={excludeDigests ? '' : 'checkbox-disabled'}>Включать сводки новостей</span>
+                        </div>
+                        {clientWidth < 900 ? null 
+                        :
+                        <div className='confirm-button-cont'>
+                            <div className='confirm-button-wrap'>
+                                <Link 
+                                    to={formValid ? '/searchres' : null}
+                                    className={formValid ? 'confirm-button' : 'confirm-button-inactive'}
+                                    onClick={formValid ? request() : null}      
+                                >
+                                    Поиск
+                                </Link>
+                                <div className='text-under-button'>
+                                    * обязательные к заполнению поля
+                                </div>
+                            </div>
+                        </div>
+                        }   
+                    </div>
+                    }
+                </div>
+            </div>
+            <div className='histograms-images-cont'>
+                {clientWidth < 900 ? null 
+                :
+                <div className='histograms-small-images'>
+                    <img src={require('./Document.png')}></img>
+                    <img src={require('./Folders.png')} className='img-margin-right'></img>
+                </div>
+                }
+                <div className='histograms-big-image-cont'>
+                    <img src={require('./Group_1171274244.png')}></img>                    
+                </div>
+            </div>    
+
+
+
+
+            {/* <button onClick={() => {if (dateValidation() && innValidation() && limitValidation() && tonalityValidation()) {
+                store.histograms(
+                    startDate, endDate, inn, limit,
+                    maxFullness, inBusinessNews, onlyMainRole,
+                    tonality, onlyWithRiskFactors, excludeTechNews,
+                    excludeAnnouncements, excludeDigests)
             }}}>
                 Вход
-            </button>
-            <p></p>
-            <div className='errors' id='error'>ошибка</div>
+            </button> */}
+            {/* <p></p>
+            <div className='errors' id='error'>ошибка</div> */}
 
 
         </div>

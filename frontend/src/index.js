@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Store from './store/store';
+import { BrowserRouter } from 'react-router-dom';
 
 const store = new Store();
 
@@ -13,13 +14,15 @@ export const Context = createContext({
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <Context.Provider value={{
-    store
-  }}>
-    <React.StrictMode>
-        <App />
-    </React.StrictMode>
-  </Context.Provider>
+  <BrowserRouter>
+    <Context.Provider value={{
+      store
+    }}>
+      <React.StrictMode>
+          <App />
+      </React.StrictMode>
+    </Context.Provider>
+  </BrowserRouter>
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -1,8 +1,18 @@
 import React, {useState} from 'react'
 import Slider from './slider/slider.js'
+import userData from '../header/user/user.js'
 import './main.css'
 
 class Main extends React.Component {
+  constructor() {
+    super()
+    {localStorage.isAuth 
+    ?
+      this.isAuth = true
+    :
+      this.isAuth = false
+    }
+  }
 
   render() {
     return (
@@ -16,7 +26,7 @@ class Main extends React.Component {
               <p>Комплексный анализ публикаций, получение данных в формате PDF на электронную почту.</p>
             </div>
             <div className='request-btn-container'>
-              <div className='request-btn'>
+              <div className={this.isAuth ? 'request-btn' : 'display-hide'}>
                 <div>Запросить данные</div>
               </div>
 
@@ -28,16 +38,16 @@ class Main extends React.Component {
 
         </div>
         <div className='main-page-slider'>
-          <div className='big-text'>
+          <div className='big-text bit-margin-left'>
             Почему именно мы
           </div>
           <Slider/>
-          <div className='scnd-image'>
-            <img  src={require('./Group_14.png')}></img>
+          <div className='scnd-image-cont'>
+            <img className='scnd-image'  src={require('./Group_14.png')}></img>
           </div>
         </div>
         <div className='tariffs-cont'>
-          <p className='big-text'>наши тарифы</p>
+          <p className='big-text bit-margin-left'>наши тарифы</p>
           <div className='tariffs'>
             <div className='tariff'>
              <div className='tariff-header'>
@@ -48,7 +58,14 @@ class Main extends React.Component {
               <img className='tariff-header-image' src={require('./tariffs_img/Group_1171274215.png')}></img>
               </div>
               <div className='tariff-inner'>
-                <p className='current-tariff-badge'><span>Текущий тариф</span></p>
+                <div className='current-tariff-badge-container'>
+                  {userData.tariff == 'beginner'
+                  ?
+                    <p className='current-tariff-badge'><span>Текущий тариф</span></p>
+                  :
+                    <p className='current-tariff-badge tariff-badge-hidden '><span>Текущий тариф</span></p>
+                  }
+                </div>
                 <div>
                   <div className='tariff-current-price'>799 ₽ <span className='tariff-previous-price'>1 200 ₽</span></div>
                   <div className='tariff-installment-plan '>или 150 ₽/мес. при рассрочке на 24 мес.</div>
@@ -61,7 +78,12 @@ class Main extends React.Component {
                   </ul>
                 </div>
                 <div className='tariff-button-container'>
-                  <div className='tariff-button'>Подробнее</div>
+                  {userData.tariff == 'beginner'
+                  ?
+                    <div className='tariff-button grey'>Перейти в личный кабинет</div> 
+                  :
+                    <div className='tariff-button'>Подробнее</div>
+                  }
                 </div>
               </div>
             </div>
@@ -74,7 +96,14 @@ class Main extends React.Component {
                 <img className='tariff-header-image' id='scnd-tariff-image' src={require('./tariffs_img/Group_1171274216.png')}></img>
               </div>
               <div className='tariff-inner'>
-              <p className='current-tariff-badge'><span>Текущий тариф</span></p>
+                <div className='current-tariff-badge-container'>
+                  {userData.tariff == 'pro'
+                  ?
+                    <p className='current-tariff-badge'><span>Текущий тариф</span></p>
+                  :
+                    <p className='current-tariff-badge tariff-badge-hidden '><span>Текущий тариф</span></p>
+                  }
+                </div>
                 <div>
                   <div className='tariff-current-price'>1 299 ₽ <span className='tariff-previous-price'>2 600 ₽</span></div>
                   <div className='tariff-installment-plan '>или 279 ₽/мес. при рассрочке на 24 мес.</div>
@@ -87,7 +116,12 @@ class Main extends React.Component {
                   </ul>
                 </div>
                 <div className='tariff-button-container'>
-                  <div className='tariff-button'>Подробнее</div>
+                  {userData.tariff == 'pro'
+                  ?
+                    <div className='tariff-button grey'>Перейти в личный кабинет</div> 
+                  :
+                    <div className='tariff-button'>Подробнее</div>
+                  }
                 </div>
               </div>
             </div>
@@ -100,20 +134,32 @@ class Main extends React.Component {
                 <img className='tariff-header-image' src={require('./tariffs_img/Group_1171274214.png')}></img>
               </div>
               <div className='tariff-inner'>
-              <p className='current-tariff-badge'><span>Текущий тариф</span></p>
+                <div className='current-tariff-badge-container'>
+                  {userData.tariff == 'business'
+                  ?
+                    <p className='current-tariff-badge'><span>Текущий тариф</span></p>
+                  :
+                    <p className='current-tariff-badge tariff-badge-hidden '><span>Текущий тариф</span></p>
+                  }
+                </div>
                 <div>
                   <div className='tariff-current-price'>2 379 ₽ <span className='tariff-previous-price'>3 700 ₽</span></div>
                   <div className='tariff-installment-plan ' id='invisible-text'>text</div>
                 </div>
                 <div className='tariff-feature-list'> В тариф входит:
                   <ul>
-                    <li>Всн пункты тарифа Pro</li>
+                    <li>Все пункты тарифа Pro</li>
                     <li>Безлимитное количесство запросов</li>
                     <li>Приоритетная поддержка</li>
                   </ul>
                 </div>
                 <div className='tariff-button-container'>
-                  <div className='tariff-button'>Подробнее</div>
+                  {userData.tariff == 'business'
+                  ?
+                    <div className='tariff-button grey'>Перейти в личный кабинет</div> 
+                  :
+                    <div className='tariff-button'>Подробнее</div>
+                  }
                 </div>
               </div>
             </div>

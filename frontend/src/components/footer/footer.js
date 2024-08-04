@@ -16,9 +16,9 @@ class Footer extends React.Component {
 
   render() {
     return (
-      <div className="footer-main-cont">
+      <footer className="footer-main-cont">
         <div>
-        <img className='logo' src={require('./footer_logo.png')}/>
+        <img className='scan-logo' src={require('./footer_logo.png')}/>
         </div>
         <div>
           <div className='footer-text'>
@@ -30,8 +30,7 @@ class Footer extends React.Component {
             <p>Copyright. 2022</p>
           </div>
         </div>
-       
-      </div>
+      </footer>
   )};
 }
 

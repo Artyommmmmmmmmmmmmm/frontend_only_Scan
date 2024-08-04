@@ -7,7 +7,6 @@ export default class Store {
 
     constructor() {
         makeAutoObservable(this)
-        console.log(this.user)
     }
 
     setAuth(bool) {
@@ -22,6 +21,8 @@ export default class Store {
         try {
             const response = await AuthService.login(login, password);
             localStorage.setItem('token', response.data.accessToken);
+            localStorage.setItem('isAuth', true);
+
             this.setAuth(true);
             this.setUser(JSON.parse(response.config.data));
         } catch(e) {
@@ -62,10 +63,36 @@ export default class Store {
                 maxFullness, inBusinessNews, onlyMainRole,
                 tonality, onlyWithRiskFactors, excludeTechNews,
                 excludeAnnouncements, excludeDigests);
-                console.log(response)
-
+            localStorage.setItem('histograms', JSON.stringify(response))
         } catch(e) {
             console.log(e)
         }
+    }
+
+    async documentIds(startDate, endDate, inn, limit,
+                    maxFullness, inBusinessNews, onlyMainRole,
+                    tonality, onlyWithRiskFactors, excludeTechNews,
+                    excludeAnnouncements, excludeDigests) {
+        try {
+            const response = await AuthService.documentIds(
+            startDate, endDate, inn, limit,
+            maxFullness, inBusinessNews, onlyMainRole,
+            tonality, onlyWithRiskFactors, excludeTechNews,
+            excludeAnnouncements, excludeDigests);
+            localStorage.setItem('ids', JSON.stringify(response))
+        } catch(e) {
+            console.log(e)
+        }
+    }
+
+    async documents(array) {
+        try {
+            const response = await AuthService.documents(array)
+            localStorage.setItem('documents', JSON.stringify(response))
+            return(response)
+        } catch(e) {
+            console.log(e)
+        }
+
     }
 }
