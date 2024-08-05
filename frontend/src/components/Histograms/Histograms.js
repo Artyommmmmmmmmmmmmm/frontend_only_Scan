@@ -76,16 +76,36 @@ const HistogramsForm = () => {
 
     const request = () => {
         {if (dateValidation() && innValidation() && limitValidation() && tonalityValidation()) {
-            store.histograms(
-                startDate, endDate, inn, limit,
-                maxFullness, inBusinessNews, onlyMainRole,
-                tonality, onlyWithRiskFactors, excludeTechNews,
-                excludeAnnouncements, excludeDigests)}}
-            store.documentIds(
-                startDate, endDate, inn, limit,
-                maxFullness, inBusinessNews, onlyMainRole,
-                tonality, onlyWithRiskFactors, excludeTechNews,
-                excludeAnnouncements, excludeDigests)
+            localStorage.setItem('requestData', JSON.stringify( 
+            {
+                issueDateInterval: {
+                  startDate: `${startDate}T00:00:00+03:00`,
+                  endDate: `${endDate}T23:59:59+03:00`
+                },
+                searchContext: {
+                  targetSearchEntitiesContext: {
+                    targetSearchEntities: [{
+                      type: "company",
+                      inn: inn,
+                      maxFullness: maxFullness,
+                    }],
+                    onlyMainRole: onlyMainRole,
+                    tonality: tonality,
+                    onlyWithRiskFactors: onlyWithRiskFactors,
+                  }
+                },
+                attributeFilters: {
+                  excludeTechNews: excludeTechNews,
+                  excludeAnnouncements: excludeAnnouncements,
+                  excludeDigests: excludeDigests,
+                },
+                limit: Number(limit),
+                sortType: "sourceInfluence",
+                sortDirectionType: "desc",
+                intervalType: "month",
+                histogramTypes: ["totalDocuments", "riskFactors"]
+              }))
+            }}
     }
 
     useEffect(() => {

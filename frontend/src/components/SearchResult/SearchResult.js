@@ -1,4 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react'
+// import { useSelector, useDispatch } from 'react-redux'
+// import { setResponseHistograms } from '../../redux/counterSlice.js'
 import Pare from './Pare/Pare.js'
 import Solo from './Solo/Solo.js'
 import { Context } from '../..'
@@ -7,31 +9,45 @@ import './SearchResult.css'
 
 const SearchResult = () => {
     const {store} = useContext(Context)
-    const response = JSON.parse(localStorage.getItem('histograms'))
-    const totalIds = JSON.parse(localStorage.getItem('ids')).data.items.map(item => item.encodedId)
+    const [response, setResponse] = useState(null) 
+    const [totalIds, setTotalIds] = useState(null) 
     const [documents, setDocuments] = useState(null)
     const [error, setError] = useState('')
     const [page, setPage] = useState(1)
     const itemsPerPage = 10
     const clientWidth = document.documentElement.clientWidth
+    const [totalData, setTotalData] = useState(null)
     const [visibleData, setVisibleData] = useState(null)
+    const request = JSON.parse(localStorage.getItem('requestData'))
+    console.log(request)
     const fetchData = async () => {
-        try {
-            const response = await store.documents(totalIds);
-            const newData = response.data.slice(0, page * itemsPerPage)
-            setVisibleData(newData);        
+      console.log(1)
+        try {console.log(2)
+            const histograms = await store.histograms(request);
+            setResponse(histograms);  
+            console.log(histograms)    
+            // const ids = await store.documentIds(request);
+            // setTotalIds(ids); 
+            // console.log(ids)    
+            // const response = await store.documents(ids);
+            // setTotalData(response); 
+            // console.log(response) 
+                 
         } catch (e) {
+          console.log(3)
             setError(e);
+            console.log(e)
         }
     };
-
-    
-
-    // const loadMoreData = () => {
-        
-    //     setVisibleData(newData)
-    // }
-
+    const check = () => {
+      console.log('респонс')
+      console.log(response)
+      console.log('айди')
+      console.log(totalIds)
+      console.log('дата')
+      console.log(totalData)
+    }
+// const newData = response.data.slice(0, page * itemsPerPage)
     useEffect(() => {
       fetchData()
     }, [page])
@@ -39,7 +55,7 @@ const SearchResult = () => {
       <div className='searchres-main-cont'>
         <div className='searchres-top-part'>
           <div>
-            <div className='searchres-big-text margin-top'>
+            <div className='searchres-big-text margin-top' onClick={() => {check()}}>
               <p>ищем. скоро</p>
               <p>будут результаты</p>
             </div>
@@ -54,7 +70,7 @@ const SearchResult = () => {
         </div>
         <div>
           <p className='searchres-smaller-big-text'>общая сводка</p>
-          <p className='variants-count-text'>{`Найдено ${response.data.data[0].data.length} вариантов`}</p>
+          <p className='variants-count-text'>{`Найдено ${0} вариантов`}</p>
           <div className='variants-cont'>
             <div className='variants-hints-cont'>
               <div  className='variants-hints'>

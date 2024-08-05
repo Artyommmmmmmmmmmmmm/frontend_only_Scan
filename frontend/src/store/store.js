@@ -1,9 +1,12 @@
 import {makeAutoObservable} from 'mobx'
 import AuthService from '../service/AuthService'
+// import { useSelector, useDispatch } from 'react-redux'
+// import { setResponseHistograms } from '../redux/counterSlice.js'
 
 export default class Store {
     user = {}
     isAuth = false
+    // dispatch = useDispatch()
 
     constructor() {
         makeAutoObservable(this)
@@ -53,33 +56,20 @@ export default class Store {
             console.log(e)
         }
     }
-    async histograms(startDate, endDate, inn, limit,
-                     maxFullness, inBusinessNews, onlyMainRole,
-                     tonality, onlyWithRiskFactors, excludeTechNews,
-                     excludeAnnouncements, excludeDigests) {
+    async histograms(request) {
         try {
-            const response = await AuthService.histograms(
-                startDate, endDate, inn, limit,
-                maxFullness, inBusinessNews, onlyMainRole,
-                tonality, onlyWithRiskFactors, excludeTechNews,
-                excludeAnnouncements, excludeDigests);
-            localStorage.setItem('histograms', JSON.stringify(response))
+            const response = await AuthService.histograms(request);
+            return response
+            // this.dispatch(setResponseHistograms(response))
         } catch(e) {
             console.log(e)
         }
     }
 
-    async documentIds(startDate, endDate, inn, limit,
-                    maxFullness, inBusinessNews, onlyMainRole,
-                    tonality, onlyWithRiskFactors, excludeTechNews,
-                    excludeAnnouncements, excludeDigests) {
+    async documentIds(request) {
         try {
-            const response = await AuthService.documentIds(
-            startDate, endDate, inn, limit,
-            maxFullness, inBusinessNews, onlyMainRole,
-            tonality, onlyWithRiskFactors, excludeTechNews,
-            excludeAnnouncements, excludeDigests);
-            localStorage.setItem('ids', JSON.stringify(response))
+            const response = await AuthService.documentIds(request);
+            return response
         } catch(e) {
             console.log(e)
         }

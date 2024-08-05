@@ -12,77 +12,13 @@ export default class AuthService {
     static info = () => {
         return $api.get(BASE_URL + '/api/v1/account/info')
     }
-    static histograms = (
-        startDate, endDate, inn, limit, 
-        maxFullness, inBusinessNews, onlyMainRole,
-        tonality, onlyWithRiskFactors, excludeTechNews,
-        excludeAnnouncements, excludeDigests) => {
+    static histograms = (request) => {
           
-        return $api.post( BASE_URL + '/api/v1/objectsearch/histograms', 
-          {
-            issueDateInterval: {
-              startDate: `${startDate}T00:00:00+03:00`,
-              endDate: `${endDate}T23:59:59+03:00`
-            },
-            searchContext: {
-              targetSearchEntitiesContext: {
-                targetSearchEntities: [{
-                  type: "company",
-                  inn: inn,
-                  maxFullness: maxFullness,
-                }],
-                onlyMainRole: onlyMainRole,
-                tonality: tonality,
-                onlyWithRiskFactors: onlyWithRiskFactors,
-              }
-            },
-            attributeFilters: {
-              excludeTechNews: excludeTechNews,
-              excludeAnnouncements: excludeAnnouncements,
-              excludeDigests: excludeDigests,
-            },
-            limit: Number(limit),
-            sortType: "sourceInfluence",
-            sortDirectionType: "desc",
-            intervalType: "month",
-            histogramTypes: ["totalDocuments", "riskFactors"]
-          });
+        return $api.post( BASE_URL + '/api/v1/objectsearch/histograms', request);
     }
-    static documentIds = (
-      startDate, endDate, inn, limit, 
-      maxFullness, inBusinessNews, onlyMainRole,
-      tonality, onlyWithRiskFactors, excludeTechNews,
-      excludeAnnouncements, excludeDigests) => {
+    static documentIds = (request) => {
         
-      return $api.post( BASE_URL + '/api/v1/objectsearch', 
-        {
-          issueDateInterval: {
-            startDate: `${startDate}T00:00:00+03:00`,
-            endDate: `${endDate}T23:59:59+03:00`
-          },
-          searchContext: {
-            targetSearchEntitiesContext: {
-              targetSearchEntities: [{
-                type: "company",
-                inn: inn,
-                maxFullness: maxFullness,
-              }],
-              onlyMainRole: onlyMainRole,
-              tonality: tonality,
-              onlyWithRiskFactors: onlyWithRiskFactors,
-            }
-          },
-          attributeFilters: {
-            excludeTechNews: excludeTechNews,
-            excludeAnnouncements: excludeAnnouncements,
-            excludeDigests: excludeDigests,
-          },
-          limit: Number(limit),
-          sortType: "sourceInfluence",
-          sortDirectionType: "desc",
-          intervalType: "month",
-          histogramTypes: ["totalDocuments", "riskFactors"]
-        });
+      return $api.post( BASE_URL + '/api/v1/objectsearch', request);
     }
     static documents = (array) => {
       return $api.post( BASE_URL + '/api/v1/documents', 
