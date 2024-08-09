@@ -23,6 +23,15 @@ class Header extends React.Component {
       isActive: !prevState.isActive
     }))};
 
+  clean = () => {
+    console.log(1)
+    localStorage.setItem('requestData', null)
+    localStorage.setItem('histograms', null)
+    localStorage.setItem('ids', null)
+    localStorage.setItem('documents', null)
+    
+  };
+
     render() {
       return (
         <header className={this.clientWidth < 900 ? 'main-cont-mobile' : 'main-cont'}>
@@ -60,6 +69,11 @@ class Header extends React.Component {
                         <div>{`${userData.firstName} ${userData.secondName.charAt(0)}.`}</div>
                         <button className='user-exit-btn'
                           onClick={() => {
+                          console.log(1)
+                          localStorage.setItem('requestData', null)
+                          localStorage.setItem('histograms', null)
+                          localStorage.setItem('ids', null)
+                          localStorage.setItem('documents', null)
                           localStorage.setItem('token', null);
                           localStorage.setItem('isAuth', '');
                           }}>

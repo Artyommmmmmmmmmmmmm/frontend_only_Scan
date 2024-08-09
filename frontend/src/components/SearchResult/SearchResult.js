@@ -11,7 +11,7 @@ const SearchResult = () => {
     const {store} = useContext(Context)
     const [response, setResponse] = useState(null) 
     const [totalIds, setTotalIds] = useState(null) 
-    const [documents, setDocuments] = useState(null)
+    const [nothingFound, setNothingFound] = useState(false)
     const [error, setError] = useState('')
     const [page, setPage] = useState(1)
     const itemsPerPage = 10
@@ -23,15 +23,20 @@ const SearchResult = () => {
   const fetchData = async () => {
     try {
         const histograms = await store.histograms(request);
-        console.log(histograms)
         setResponse(histograms);  
 
         const ids = await store.documentIds(request);
+        if (histograms.data.data.length === 0 && ids.data.items.length === 0) {
+          setNothingFound(true)
+          return null
+        }
+        console.log(ids)
         const array = await ids.data.items.map((item) => item.encodedId)
         setTotalIds(array)
 
         const response = await store.documents(array);
         setTotalData(response); 
+        console.log(response)
         setVisibleData(response.data.slice(0, page * itemsPerPage))
     } catch (e) {
         setError(e);
@@ -78,10 +83,13 @@ const SearchResult = () => {
         <div>
           <p className='searchres-smaller-big-text'>общая сводка</p>
           <p className='variants-count-text'>
-          {response ?
-          `Найдено ${response.data.data[0].data.length} вариантов`
+          {nothingFound ? 
+            'ничего не найдено'
           :
-          'зпгрузка..'
+            response ?
+              `Найдено ${response.data.data[0].data.length} вариантов`
+            :
+              'загрузка..'            
           }
           </p>
           <div className='variants-cont'>
@@ -93,46 +101,50 @@ const SearchResult = () => {
               </div>
             </div>
             <div className='searchres-slider-cont'>
-              {response ? 
-              <Slider1 responseData={response}/>
-              : 
-              'загрузка'
+              {nothingFound ? 
+                'ничего не найдено'
+              :
+                response ? 
+                  <Slider1 responseData={response}/>
+                : 
+                  'загрузка'
               }
             </div>
           </div>
         </div>
-        <div>
-          <p className='searchres-smaller-big-text'>список документов</p>
-          {visibleData ?
-          <div className='cards-cont'>
-            {clientWidth < 900 ?
-            visibleData.map((item) => 
-            <Solo
-              item={item}
-            />
-            )
-            :
-             visibleData.map((item, index) => 
-              index % 2 === 0 ?
-              <Pare
-                  key={index}
-                  item1={item}
-                  item2={visibleData[index+1]}
-              />  : null          
-              )}
-
-          </div>
-          :
+        {nothingFound ? 
+          'ничего не найдено'
+        :
           <div>
-            <p>загрузка</p>
+            <p className='searchres-smaller-big-text'>список документов</p>
+            {visibleData ?
+              <div className='cards-cont'>
+                {clientWidth < 900 ?
+                visibleData.map((item) => 
+                <Solo
+                  item={item}
+                />
+                )
+                :
+                visibleData.map((item, index) => 
+                  index % 2 === 0 ?
+                  <Pare
+                      key={index}
+                      item1={item}
+                      item2={visibleData[index+1]}
+                  />  : null          
+                  )}
+              </div>
+            :
+              <div>
+                <p>загрузка</p>
+              </div>
+            }
+            <div className='show-more-btn-cont'>
+              <button onClick={() => {showMore()}} className='show-more-btn'>Показать больше</button>
+            </div>
           </div>
-          }
-          <div className='show-more-btn-cont'>
-            <button onClick={() => {showMore()}} className='show-more-btn'>Показать больше</button>
-          </div>
-
-
-        </div>
+        } 
       </div>
     );
 }

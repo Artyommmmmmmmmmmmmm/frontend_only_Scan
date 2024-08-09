@@ -18,7 +18,6 @@ const Slider1 = (responseData) => {
     const docs = []
     const response = responseData.responseData
     for (let i = 0 ; i < response.data.data[0].data.length ; i++) {
-      console.log(i)
       docs.push(
         {
           id: i,

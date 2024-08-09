@@ -200,6 +200,7 @@
     height: 60px;
     background-color: rgba(89, 112, 255, 0.5);
     border-radius: 10px;
+    border: none;
 }
 
 @media (max-width: 900px) {

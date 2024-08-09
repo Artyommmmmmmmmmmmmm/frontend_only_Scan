@@ -21,9 +21,8 @@ export default class AuthService {
       return $api.post( BASE_URL + '/api/v1/objectsearch', request);
     }
     static documents = (array) => {
-      return $api.post( BASE_URL + '/api/v1/documents', 
-        {ids : array}
-        );
+      const response = $api.post( BASE_URL + '/api/v1/documents', {ids : array});
+      return response
     }
     static persons = (num) => {
         return $api.post(BASE_URL + '/api/v1/entities/persons', [num])
