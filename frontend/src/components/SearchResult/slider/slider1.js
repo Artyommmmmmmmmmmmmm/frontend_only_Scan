@@ -12,13 +12,13 @@ import './slider1.css'
 
 
 
-const Slider1 = () => {
+const Slider1 = (responseData) => {
 
-    let firstRender = true
     const clientWidth = document.documentElement.clientWidth
-    const response = JSON.parse(localStorage.getItem('histograms'))
     const docs = []
+    const response = responseData.responseData
     for (let i = 0 ; i < response.data.data[0].data.length ; i++) {
+      console.log(i)
       docs.push(
         {
           id: i,
@@ -33,7 +33,7 @@ const Slider1 = () => {
       )
     }
 
-    const componentDidMount = () => {
+    const createSwiper = () => {
             const swiper = new Swiper('.swiper1', {
                 // Optional parameters
                 direction: 'horizontal',
@@ -69,10 +69,7 @@ const Slider1 = () => {
 
     }
     useEffect(() => {
-        if (firstRender) {
-            componentDidMount()
-        }
-        return () => {firstRender = false }
+        createSwiper()
     }, [])
 
 

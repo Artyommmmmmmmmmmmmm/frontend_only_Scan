@@ -1,6 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react'
 import { Context } from '../..'
-import {observer} from 'mobx-react-lite'
+import { observer } from 'mobx-react-lite'
+import { useNavigate } from 'react-router-dom'
 import './Loginform.css'
 
 const LoginForm = () => {
@@ -12,6 +13,7 @@ const LoginForm = () => {
     const [validForm, setValidForm] = useState(false)
     const [loginValid, setLoginValid] = useState(false)
     const clientWidth = document.documentElement.clientWidth
+    const navigate = useNavigate()
     // const reg1 = new RegExp('^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$')
 
     // const validateLogin = (input) => {
@@ -26,6 +28,10 @@ const LoginForm = () => {
         }
     })
 
+    const handleLogin = () => {
+        store.login(login, password)
+        navigate('/')
+    }
 
     return (
         <div className='login-form-container'>
@@ -71,7 +77,7 @@ const LoginForm = () => {
                             />
                         </div>
                     </div>
-                    <button onClick={validForm ? () => {store.login(login, password)} : null}
+                    <button onClick={validForm ? handleLogin : null}
                             className={validForm ? 'insert-btn' : 'insert-btn-inactive'}>
                         Войти
                     </button>
@@ -90,31 +96,6 @@ const LoginForm = () => {
                             </div>
                         </div>
                     </div>
-
-
-
-                    {/* <button onClick={() => {
-                        localStorage.setItem('token', null);
-                        localStorage.setItem('isAuth', '');
-                    }}>
-                        Выход
-                    </button>
-                    <p></p>           
-                    <button onClick={() => {store.info()}}>
-                        Инфо
-                    </button>
-                    <p></p>
-                    <input
-                    type='text'
-                    value={person}
-                    placeholder='число'
-                    onChange={(e) => setPerson(e.target.value)}
-                    />
-                    <button onClick={() => {store.persons(person)}}>
-                        персона
-                    </button>
-                    <p></p>
-                    <button onClick={() => {store.history()}}>история</button> */}
                 </div>
             </div>
             {clientWidth < 900 ?

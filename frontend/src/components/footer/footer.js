@@ -22,7 +22,7 @@ class Footer extends React.Component {
         </div>
         <div>
           <div className='footer-text'>
-            <p>г. Москва, Цвветной б-р, 40</p>
+            <p>г. Москва, Цветной б-р, 40</p>
             <p>+7 495 771 21 11</p>
             <p>info@scan.ru</p>
           </div>

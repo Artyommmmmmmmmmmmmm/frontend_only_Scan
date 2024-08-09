@@ -76,7 +76,6 @@ const HistogramsForm = () => {
         }    
 
     const request = () => {
-        console.log(1)
         {if (dateValidation() && innValidation() && limitValidation() && tonalityValidation()) {
             const requestData = JSON.stringify( 
             {
@@ -202,7 +201,7 @@ const HistogramsForm = () => {
                             <div className='confirm-button-wrap'>
                                 <button
                                     className={formValid ? 'confirm-button' : 'confirm-button-inactive'}
-                                    onClick={formValid ? request() : null}        
+                                    onClick={formValid ? request : null}        
                                 >
                                     Поиск
                                 </button>
@@ -280,7 +279,7 @@ const HistogramsForm = () => {
                             <div className='confirm-button-wrap'>
                                 <button
                                     className={formValid ? 'confirm-button' : 'confirm-button-inactive'}
-                                    onClick={formValid ? request() : null}        
+                                    onClick={formValid ? request : null}        
                                 >
                                     Поиск
                                 </button>

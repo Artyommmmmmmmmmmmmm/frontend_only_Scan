@@ -184,6 +184,7 @@
     height: 60px;
     background-color: #5970FF;
     border-radius: 10px;
+    border: 0;
 }
 
 .confirm-button-inactive {

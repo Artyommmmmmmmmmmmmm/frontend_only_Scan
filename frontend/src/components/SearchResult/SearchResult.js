@@ -17,11 +17,13 @@ const SearchResult = () => {
     const itemsPerPage = 10
     const clientWidth = document.documentElement.clientWidth
     const [totalData, setTotalData] = useState(null)
+    const [visibleData, setVisibleData] = useState(null)
     const request = JSON.parse(localStorage.getItem('requestData'))
 
   const fetchData = async () => {
     try {
         const histograms = await store.histograms(request);
+        console.log(histograms)
         setResponse(histograms);  
 
         const ids = await store.documentIds(request);
@@ -30,8 +32,7 @@ const SearchResult = () => {
 
         const response = await store.documents(array);
         setTotalData(response); 
-        console.log(response)
-        const visibleData = response.data.slice(0, page * itemsPerPage)
+        setVisibleData(response.data.slice(0, page * itemsPerPage))
     } catch (e) {
         setError(e);
         console.log(e)
@@ -43,31 +44,25 @@ const SearchResult = () => {
   }
 
   const changePage = () => {
-      return  totalData.data.slice(0, page * itemsPerPage)
-    };
-    const check = () => {
-      console.log('респонс')
-      console.log(response)
-      console.log('айди')
-      console.log(totalIds)
-      console.log('дата')
-      console.log(totalData)
-    };
+      if (totalData) {
+        return  totalData.data.slice(0, page * itemsPerPage)
+    }};
 // const newData = response.data.slice(0, page * itemsPerPage)
     useEffect(() => {
       fetchData()
     }, [])  
 
-    let visibleData = null
-    if (totalData) {
-      visibleData = changePage()
-    }
+    useEffect(() => {
+        setVisibleData(changePage())
+    }, [page])
+
+
 
     return (
       <div className='searchres-main-cont'>
         <div className='searchres-top-part'>
           <div>
-            <div className='searchres-big-text margin-top' onClick={() => {check()}}>
+            <div className='searchres-big-text margin-top'>
               <p>ищем. скоро</p>
               <p>будут результаты</p>
             </div>
@@ -82,7 +77,13 @@ const SearchResult = () => {
         </div>
         <div>
           <p className='searchres-smaller-big-text'>общая сводка</p>
-          <p className='variants-count-text'>{`Найдено ${0} вариантов`}</p>
+          <p className='variants-count-text'>
+          {response ?
+          `Найдено ${response.data.data[0].data.length} вариантов`
+          :
+          'зпгрузка..'
+          }
+          </p>
           <div className='variants-cont'>
             <div className='variants-hints-cont'>
               <div  className='variants-hints'>
@@ -92,7 +93,11 @@ const SearchResult = () => {
               </div>
             </div>
             <div className='searchres-slider-cont'>
-              <Slider1/>
+              {response ? 
+              <Slider1 responseData={response}/>
+              : 
+              'загрузка'
+              }
             </div>
           </div>
         </div>
