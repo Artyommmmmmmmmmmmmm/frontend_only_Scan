@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react'
 import { Context } from '../..'
 import {observer} from 'mobx-react-lite'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import './Histograms.css'
 
 const HistogramsForm = () => {
@@ -20,6 +20,7 @@ const HistogramsForm = () => {
     const [excludeDigests, setExcludeDigests] = useState(false)
     const [formValid, setFormValid] = useState(false)
     const clientWidth = document.documentElement.clientWidth
+    const navigate = useNavigate()
  
     const innValidation = () => {
         const n1 = inn[0] * 2
@@ -68,15 +69,16 @@ const HistogramsForm = () => {
 
     const limitValidation = () => {
         const numLimit = Number(limit)
-        if(numLimit < 0 || numLimit > 1000 || limit == ''){
+        if(numLimit < 0 || numLimit > 100 || limit == ''){
             return false
         }
         return true
         }    
 
     const request = () => {
+        console.log(1)
         {if (dateValidation() && innValidation() && limitValidation() && tonalityValidation()) {
-            localStorage.setItem('requestData', JSON.stringify( 
+            const requestData = JSON.stringify( 
             {
                 issueDateInterval: {
                   startDate: `${startDate}T00:00:00+03:00`,
@@ -104,7 +106,9 @@ const HistogramsForm = () => {
                 sortDirectionType: "desc",
                 intervalType: "month",
                 histogramTypes: ["totalDocuments", "riskFactors"]
-              }))
+              })
+              localStorage.setItem('requestData', requestData);
+              navigate('/searchres')
             }}
     }
 
@@ -171,7 +175,7 @@ const HistogramsForm = () => {
                             <input 
                             className='tonality-input histograms-input'
                             type='text'
-                            placeholder='1-1000'
+                            placeholder='1-100'
                             value={limit}
                             onChange={(e) => {setLimit(e.target.value)}}/>                            
                         </div>   
@@ -196,13 +200,12 @@ const HistogramsForm = () => {
                         ?
                         <div className='confirm-button-cont'>
                             <div className='confirm-button-wrap'>
-                                <Link 
-                                    to={formValid ? '/searchres' : null}
+                                <button
                                     className={formValid ? 'confirm-button' : 'confirm-button-inactive'}
                                     onClick={formValid ? request() : null}        
                                 >
                                     Поиск
-                                </Link>
+                                </button>
                                 <div className='text-under-button'>
                                     * обязательные к заполнению поля
                                 </div>
@@ -275,13 +278,12 @@ const HistogramsForm = () => {
                         :
                         <div className='confirm-button-cont'>
                             <div className='confirm-button-wrap'>
-                                <Link 
-                                    to={formValid ? '/searchres' : null}
+                                <button
                                     className={formValid ? 'confirm-button' : 'confirm-button-inactive'}
-                                    onClick={formValid ? request() : null}      
+                                    onClick={formValid ? request() : null}        
                                 >
                                     Поиск
-                                </Link>
+                                </button>
                                 <div className='text-under-button'>
                                     * обязательные к заполнению поля
                                 </div>
