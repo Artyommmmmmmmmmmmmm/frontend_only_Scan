@@ -18,7 +18,13 @@ const HistogramsForm = () => {
     const [excludeTechNews, setExcludeTechNews] = useState(false)
     const [excludeAnnouncements, setExcludeAnnouncements] = useState(false)
     const [excludeDigests, setExcludeDigests] = useState(false)
+    
     const [formValid, setFormValid] = useState(false)
+    const [dateValid, setDateValid] = useState(false)
+    const [innValid, setInnValid] = useState(false)
+    const [tonalityValid, setTonalityValid] = useState(false)
+    const [limitValid, setLimitValid] = useState(false)
+
     const clientWidth = document.documentElement.clientWidth
     const navigate = useNavigate()
  
@@ -36,11 +42,14 @@ const HistogramsForm = () => {
                       n4+n5+n6+
                       n7+n8+n9
         control = control%11
-        if (control == inn[9]) {
+        if (control == inn[9] && inn.length < 11) {
             // document.getElementById('error').innerHTML = ''
+            setInnValid(true)
+            console.log(1)
             return true
         } else {
             // document.getElementById('error').innerHTML = 'инн введён неверно'
+            setInnValid(false)
             return false
             
 
@@ -55,23 +64,30 @@ const HistogramsForm = () => {
         if (dateStart.getTime() < current.getTime() && 
             dateEnd.getTime() < current.getTime() && 
             dateStart.getTime() < dateEnd.getTime()) {
+            setDateValid(true)
             return true
         }
+        setDateValid(false)
         return false
     }
 
     const tonalityValidation = () => {
         if(tonality == '') {
+            setTonalityValid(false)
             return false
         }
+        setTonalityValid(true)
+        console.log(2)
         return true
     }
 
     const limitValidation = () => {
         const numLimit = Number(limit)
         if(numLimit < 0 || numLimit > 100 || limit == ''){
+            setLimitValid(false)
             return false
         }
+        setLimitValid(true)
         return true
         }    
 
@@ -112,12 +128,16 @@ const HistogramsForm = () => {
     }
 
     useEffect(() => {
+        innValidation()
+        dateValidation()
+        limitValidation()
+        tonalityValidation()
         if (dateValidation() && innValidation() && limitValidation() && tonalityValidation()) {
             setFormValid(true)
         } else {
             setFormValid(false)
         }
-    })
+    }, [inn, startDate, endDate, tonality, limit])
 
     return (
         <div className='histograms-main-cont'>
@@ -149,7 +169,7 @@ const HistogramsForm = () => {
 
                 <div className='histograms-form-cont'>
                     <div className='inputs-cont'>
-                        <div className='histograms-input-cont'>
+                        <div className='top-input-cont histograms-input-cont'>
                             ИНН компании*
                             <input 
                             className='inn-input histograms-input'
@@ -157,6 +177,7 @@ const HistogramsForm = () => {
                             value={inn} 
                             onChange={(e) => {setInn(e.target.value)}}/>
                         </div>
+                        <div className='err-msg-cont'>{innValid ? '' : 'Введите корректные данные'}</div>
                         <div className='histograms-input-cont'>
                             Тональность*
                             <select 
@@ -169,6 +190,7 @@ const HistogramsForm = () => {
                                 <option value='any'>любая</option>
                             </select>
                         </div>
+                        <div className='err-msg-cont'>{tonalityValid ? '' : 'выберите тональность'}</div>
                         <div className='histograms-input-cont'>
                             Количество документов в выдаче*
                             <input 
@@ -178,6 +200,7 @@ const HistogramsForm = () => {
                             value={limit}
                             onChange={(e) => {setLimit(e.target.value)}}/>                            
                         </div>   
+                        <div className='err-msg-cont'>{limitValid ? '' : 'Введите число от 1 до 100'}</div>
                         <div className='histograms-input-cont'>
                             Диапазон поиска*
                             <div className='date-inputs-cont'>
@@ -194,6 +217,7 @@ const HistogramsForm = () => {
                                     value={endDate}
                                     onChange={(e) => {setEndDate(e.target.value)}}/>
                             </div>
+                            <div className='err-msg-dates-cont'>{dateValid ? '' : 'введите даты от до в прошлом времени'}</div>
                         </div>  
                         {clientWidth < 900 
                         ?

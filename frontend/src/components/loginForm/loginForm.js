@@ -70,7 +70,7 @@ const LoginForm = () => {
                         <div className='password-container'>
                             Пароль:
                             <input className='input' 
-                                type="text" 
+                                type="password" 
                                 value={password}
                                 placeholder=''
                                 onChange={(e) => {setPassword(e.target.value)}}

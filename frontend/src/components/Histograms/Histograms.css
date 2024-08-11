@@ -86,10 +86,14 @@
     margin-right: 100px;
 }
 
+.top-input-cont {
+    padding-top: 30px !important;
+}
+
 .histograms-input-cont {
     display: flex;
     flex-direction: column;
-    padding-top: 30px;
+    padding-top: 10px;
 }
 
 .histograms-input {
@@ -202,6 +206,29 @@
     border-radius: 10px;
     border: none;
 }
+
+.err-msg-cont {
+    padding-top: 5px;
+    width: 240px;
+    font-size: 15px;
+    height: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: red;
+}
+
+.err-msg-dates-cont {
+    padding-top: 5px;
+    width: 380px;
+    font-size: 15px;
+    height: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: red;
+}
+
 
 @media (max-width: 900px) {
 
