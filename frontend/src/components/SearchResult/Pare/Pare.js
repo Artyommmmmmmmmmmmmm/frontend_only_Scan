@@ -1,7 +1,7 @@
 import React from 'react'
 import '../SearchResult.css'
 
-const Pare = ({item1, item2}) => {
+const Pare = ({item1=null, item2=null}) => {
     return (
     <div className='card-pare-cont'>
         <div className='main-card-cont'>
@@ -38,6 +38,7 @@ const Pare = ({item1, item2}) => {
                 </div>
             </div>
         </div>
+        {item2 ?
         <div className='main-card-cont'>
             <div className='card-inner-cont'>
                 <p className='card-date-text'>{`
@@ -72,6 +73,7 @@ const Pare = ({item1, item2}) => {
                 </div>
             </div>
         </div>
+        : null }
     </div>        
     )
 }

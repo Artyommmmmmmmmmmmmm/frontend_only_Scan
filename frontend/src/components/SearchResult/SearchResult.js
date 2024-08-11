@@ -9,9 +9,10 @@ import './SearchResult.css'
 
 const SearchResult = () => {
     const {store} = useContext(Context)
-    const [response, setResponse] = useState(null) 
+    const [response, setResponse] = useState(false) 
     const [totalIds, setTotalIds] = useState(null) 
-    const [nothingFound, setNothingFound] = useState(false)
+    const [idsNothingFound, setIdsNothingFound] = useState(false)
+    const [histogramsNothingFound, setHistogramsNothingFound] = useState(false)
     const [error, setError] = useState('')
     const [page, setPage] = useState(1)
     const itemsPerPage = 10
@@ -23,20 +24,23 @@ const SearchResult = () => {
   const fetchData = async () => {
     try {
         const histograms = await store.histograms(request);
+        const ids = await store.documentIds(request);
+
+
+        if (histograms.data.data.length === 0) {
+          setHistogramsNothingFound(true)
+        }
         setResponse(histograms);  
 
-        const ids = await store.documentIds(request);
-        if (histograms.data.data.length === 0 && ids.data.items.length === 0) {
-          setNothingFound(true)
+        if (ids.data.items.length === 0) {
+          setIdsNothingFound(true)
           return null
         }
-        console.log(ids)
         const array = await ids.data.items.map((item) => item.encodedId)
         setTotalIds(array)
 
         const response = await store.documents(array);
         setTotalData(response); 
-        console.log(response)
         setVisibleData(response.data.slice(0, page * itemsPerPage))
     } catch (e) {
         setError(e);
@@ -83,7 +87,7 @@ const SearchResult = () => {
         <div>
           <p className='searchres-smaller-big-text'>общая сводка</p>
           <p className='variants-count-text'>
-          {nothingFound ? 
+          {histogramsNothingFound ? 
             'ничего не найдено'
           :
             response ?
@@ -101,7 +105,7 @@ const SearchResult = () => {
               </div>
             </div>
             <div className='searchres-slider-cont'>
-              {nothingFound ? 
+              {histogramsNothingFound ? 
                 'ничего не найдено'
               :
                 response ? 
@@ -112,7 +116,7 @@ const SearchResult = () => {
             </div>
           </div>
         </div>
-        {nothingFound ? 
+        {idsNothingFound ? 
           'ничего не найдено'
         :
           <div>

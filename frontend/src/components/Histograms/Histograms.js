@@ -45,7 +45,6 @@ const HistogramsForm = () => {
         if (control == inn[9] && inn.length < 11) {
             // document.getElementById('error').innerHTML = ''
             setInnValid(true)
-            console.log(1)
             return true
         } else {
             // document.getElementById('error').innerHTML = 'инн введён неверно'
@@ -77,7 +76,6 @@ const HistogramsForm = () => {
             return false
         }
         setTonalityValid(true)
-        console.log(2)
         return true
     }
 
